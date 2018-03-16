@@ -91,7 +91,7 @@ namespace RemoteProtection.Server
                 server.Abort();
                 btn_Run.Content = "Start listen";
                 serverWorking = false;
-                TextBox_ServerIP.IsReadOnly = false;      
+                TextBox_ServerIP.IsReadOnly = false;
             }
         }
 
@@ -201,7 +201,7 @@ namespace RemoteProtection.Server
         }
 
         private void ReportsListView_MouseDoubleClick(object sender, MouseEventArgs e)
-        {            
+        {
             var dr = MessageBox.Show("Имя пользователя: " + reports[ReportsListView.SelectedIndex][2] + ";" + Environment.NewLine + "Имя приложения: " + reports[ReportsListView.SelectedIndex][1] + Environment.NewLine + "Информация о перехваченном пакете: " + Environment.NewLine + reports[ReportsListView.SelectedIndex][3] + Environment.NewLine + "Yes - блокировка. No - игнорирование. Cancel - отмена.", "Packet report",
                     MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
             string message = String.Empty;
@@ -209,20 +209,27 @@ namespace RemoteProtection.Server
             if (dr == MessageBoxResult.Yes)
             {
                 message = reports[ReportsListView.SelectedIndex][0] + "|1|" + reports[ReportsListView.SelectedIndex][1];
+
+                ReportsListView.Items.Remove(ReportsListView.SelectedItems[0]);
+                ReportsListView.Items.Refresh();
             }
-            else if(dr == MessageBoxResult.No)
+            else if (dr == MessageBoxResult.No)
             {
                 message = reports[ReportsListView.SelectedIndex][0] + "|0|" + reports[ReportsListView.SelectedIndex][1];
+
+                ReportsListView.Items.Remove(ReportsListView.SelectedItems[0]);
+                ReportsListView.Items.Refresh();
             }
             else
             {
                 return;
-            }
+            }       
+
             //server.Abort();
             answer = new IPEndPoint(serverIp, 8010);
             listenSocketForSend = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             listenSocketForSend.Connect(answer);
-            
+
             byte[] data = new byte[256];
             data = Encoding.Unicode.GetBytes(message);
 
