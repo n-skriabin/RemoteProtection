@@ -212,6 +212,8 @@ namespace RemoteProtection.Server
 
                 ReportsListView.Items.Remove(ReportsListView.SelectedItems[0]);
                 ReportsListView.Items.Refresh();
+
+                reports.RemoveAt(ReportsListView.SelectedIndex);
             }
             else if (dr == MessageBoxResult.No)
             {
@@ -219,6 +221,8 @@ namespace RemoteProtection.Server
 
                 ReportsListView.Items.Remove(ReportsListView.SelectedItems[0]);
                 ReportsListView.Items.Refresh();
+
+                reports.RemoveAt(ReportsListView.SelectedIndex);
             }
             else
             {
